@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodShare | Reduce Waste, Share Food</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles_index.css">
+    <style>
+        :root {
+            --primary-color: #6ab04c;
+            --secondary-color: #badc58;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #f39c12;
+        }
+
+        /* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+}
+
+.login-form {
+    display: none;
+}   
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #5aa042;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(106, 176, 76, 0.9), rgba(58, 134, 255, 0.8)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h3 {
+            font-size: 36px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h4 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            right: -50px;
+            width: 100px;
+            height: 2px;
+            background-color: var(--primary-color);
+            opacity: 0.3;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: modalOpen 0.4s;
+        }
+        
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .login-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .login-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--light-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-option:hover {
+            background-color: #e0e0e0;
+            transform: translateX(5px);
+        }
+        
+        .login-option i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+        
+        .login-option h4 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .login-option p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* Login Form */
+        .login-form {
+            display: none;
+        }
+        
+        .login-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                margin-bottom: 40px;
+            }
+            
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://dynamic.design.com/asset/logo/ed0bbda8-586c-4239-bb32-0ccf4725c87f/logo-search-grid-2x?logoTemplateVersion=2&v=638772112686900000&text=RescueBite&colorpalette=green" alt="RescueBite">
+                    <h1>RescueBite</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">How It Works</a></li>
+                    <li><a href="#">Impact</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#" class="btn" id="loginBtn">Sign In</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Share Food, Reduce Waste</h2>
+            <p>Connect with your community to share surplus food and reduce waste. Together we can make a difference.</p>
+            <a href="#" class="btn" id="heroLoginBtn">Join Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h3>Why FoodShare?</h3>
+                <p>Our platform makes it easy to share food with those who need it, reducing waste and helping communities.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Reduce Waste</h4>
+                    <p>Help prevent good food from going to waste by sharing it with others in your community.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>Help Others</h4>
+                    <p>Your surplus food can make a real difference to people and organizations in need.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Build Community</h4>
+                    <p>Connect with neighbors and local organizations to strengthen your community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h3>How It Works</h3>
+                <p>Getting started with FoodShare is simple and easy for everyone.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Sign Up</h4>
+                    <p>Create an account as a donator, recipient, or orphanage.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>List or Browse</h4>
+                    <p>Donators list available food, others browse what's available.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Connect</h4>
+                    <p>Arrange pickup or delivery of the food items.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Share</h4>
+                    <p>Complete the share and help reduce food waste!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Welcome to FoodShare</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="loginOptions">
+                    <h4>Sign in as:</h4>
+                    <div class="login-options">
+                        <div class="login-option" data-role="donator">
+                            <i class="fas fa-utensils"></i>
+                            <div>
+                                <h4>Food Donator (Hotel/Vendor)</h4>
+                                <p>Businesses or individuals with surplus food to share</p>
+                            </div>
+                        </div>
+                        <div class="login-option" data-role="user">
+                            <i class="fas fa-user"></i>
+                            <div>
+                                <h4>Food Recipient</h4>
+                                <p>Individuals looking to receive shared food</p>
+                            </div>
+                        </div>
+                        <div class="login-option" data-role="orphanage">
+                            <i class="fas fa-home"></i>
+                            <div>
+                                <h4>Orphanage/Organization</h4>
+                                <p>Charities and organizations that can use donated food</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px;">Don't have an account? <a href="#" style="color: var(--primary-color);">Sign up</a></p>
+                </div>
+<!-- Donator Login Form -->
+<div class="login-form" id="donatorLogin">
+    <h4>Hotel/Vendor Sign In</h4>
+    <form id="donatorForm">
+        <div class="form-group">
+            <label for="donatorEmail">Email</label>
+            <input type="email" id="donatorEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="donatorPassword">Password</label>
+            <input type="password" id="donatorPassword" placeholder="Enter your password" required>
+        </div>
+        <div class="form-actions">
+            <a href="#" class="forgot-password">Forgot password?</a>
+            <button type="submit" class="btn">Sign In</button> 
+        </div>
+    </form>
+</div>
+                    <p style="text-align: center; margin-top: 20px;">Not a donator? <a href="#" class="switch-role" style="color: var(--primary-color);">Switch role</a></p>
+                </div>
+
+                <!-- User Login Form -->
+                <div class="login-form" id="userLogin">
+                    <h4>Recipient Sign In</h4>
+                    <form id="userForm">
+                        <div class="form-group">
+                            <label for="userEmail">Email</label>
+                            <input type="email" id="userEmail" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="userPassword">Password</label>
+                            <input type="password" id="userPassword" placeholder="Enter your password">
+                        </div>
+                        <div class="form-actions">
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                            <button type="submit" class="btn">Sign In</button>
+                        </div>
+                    </form>
+                    <p style="text-align: center; margin-top: 20px;">Not a recipient? <a href="#" class="switch-role" style="color: var(--primary-color);">Switch role</a></p>
+                </div>
+
+                <!-- Orphanage Login Form -->
+                <div class="login-form" id="orphanageLogin">
+                    <h4>Organization Sign In</h4>
+                    <form id="orgForm">
+                        <div class="form-group">
+                            <label for="orgEmail">Email</label>
+                            <input type="email" id="orgEmail" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="orgPassword">Password</label>
+                            <input type="password" id="orgPassword" placeholder="Enter your password">
+                        </div>
+                        <div class="form-actions">
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                            <button type="submit" class="btn">Sign In</button>
+                        </div>
+                    </form>
+                    <p style="text-align: center; margin-top: 20px;">Not an organization? <a href="#" class="switch-role" style="color: var(--primary-color);">Switch role</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>FoodShare</h4>
+                    <p>Connecting communities to share food and reduce waste for a more sustainable future.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Safety Guidelines</a></li>
+                        <li><a href="#">Food Handling Tips</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                        <li><a href="#">Partner With Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@foodshare.org</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Green St, Eco City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FoodShare. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginModal = document.getElementById('loginModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const heroLoginBtn = document.getElementById('heroLoginBtn');
+            const closeModal = document.querySelector('.close-modal');
+            const loginOptions = document.querySelectorAll('.login-option');
+            const switchRoleLinks = document.querySelectorAll('.switch-role');
+        
+            // Event listeners for opening the modal
+            [loginBtn, heroLoginBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loginModal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                        resetForms();
+                    });
+                }
+            });
+        
+            // Close modal when clicking the close button or outside the modal
+            if (closeModal) {
+                closeModal.addEventListener('click', closeModalHandler);
+            }
+            window.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    closeModalHandler();
+                }
+            });
+        
+            // Show the appropriate login form based on user selection
+            loginOptions.forEach(option => {
+                if (option) {
+                    option.addEventListener('click', () => {
+                        const role = option.getAttribute('data-role');
+                        showLoginForm(role);
+                    });
+                }
+            });
+        
+            // Switch role links to reset forms
+            switchRoleLinks.forEach(link => {
+                if (link) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        resetForms();
+                    });
+                }
+            });
+        
+            // Handle form submissions for each user type
+            const donatorForm = document.getElementById('donatorForm');
+            const userForm = document.getElementById('userForm');
+            const orgForm = document.getElementById('orgForm');
+        
+            if (donatorForm) {
+                donatorForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    handleLogin('donator');
+                });
+            }
+        
+            if (userForm) {
+                userForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    handleLogin('user');
+                });
+            }
+        
+            if (orgForm) {
+                orgForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    handleLogin('orphanage');
+                });
+            }
+        
+            // Function to close the modal
+            function closeModalHandler() {
+                loginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        
+            // Reset forms to show login options
+            function resetForms() {
+                const loginOptionsDiv = document.getElementById('loginOptions');
+                if (loginOptionsDiv) {
+                    loginOptionsDiv.style.display = 'block';
+                }
+                document.querySelectorAll('.login-form').forEach(form => {
+                    form.style.display = 'none';
+                });
+            }
+        
+            // Show the selected login form
+            function showLoginForm(role) {
+                const loginOptionsDiv = document.getElementById('loginOptions');
+                if (loginOptionsDiv) {
+                    loginOptionsDiv.style.display = 'none';
+                }
+                const formToShow = document.getElementById(`${role}Login`);
+                if (formToShow) {
+                    formToShow.style.display = 'block';
+                }
+            }
+        
+            // Handle login logic
+            function handleLogin(userType) {
+                const emailField = userType === 'orphanage' ? 'orgEmail' : `${userType}Email`;
+    const passwordField = userType === 'orphanage' ? 'orgPassword' : `${userType}Password`;
+    
+    const emailInput = document.getElementById(emailField);
+    const passwordInput = document.getElementById(passwordField);
+    
+    // Debugging logs (can be removed in production)
+    console.log(`Login attempt as ${userType}`);
+    console.log('Email field:', emailField, 'Value:', emailInput?.value);
+    console.log('Password field:', passwordField, 'Value:', passwordInput?.value);
+
+    // Validate inputs
+    if (!emailInput || !passwordInput) {
+        alert('System error: Could not find form fields');
+        return;
+    }
+    
+    // Trim whitespace and validate
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    if (!email || !password) {
+        alert('Please enter both email and password');
+        return;
+    }
+    
+    // Basic email validation
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Store email in localStorage
+    localStorage.setItem(`${userType}Email`, email);
+    
+    // Redirect to appropriate dashboard
+    const dashboards = {
+        'donator': 'hotel_dashboard.html',
+        'user': 'vendor_dashboard.html',
+        'orphanage': 'orphanage_dashboard.html'
+    };
+                
+                localStorage.setItem(`${userType}Email`, emailInput.value);
+                
+                // Redirect to the appropriate dashboard based on user type
+                let redirectUrl;
+                switch (userType) {
+                    case 'donator':
+                        redirectUrl = 'hotel_dashboard.html'; // Redirect for donator
+                        break;
+                    case 'user':
+                        redirectUrl = 'vendor_dashboard.html'; // Redirect for user
+                        break;
+                    case 'orphanage':
+                        redirectUrl = 'orphanage_dashboard.html'; // Corrected spelling for orphanage
+                        break;
+                    default:
+                        alert('Invalid user type');
+                        return;
+                }
+        
+                window.location.href = `${redirectUrl}?email=${encodeURIComponent(emailInput.value)}`;
+            }
+        });
+        </script>
+</body>
+</html>
